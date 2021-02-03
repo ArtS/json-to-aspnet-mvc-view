@@ -19,16 +19,21 @@ namespace json_to_view.Controllers
             _logger = logger;
         }
 
+        private string GetDateString(DateTime date)
+        {
+            return date.ToShortDateString();
+        }
+
         public IActionResult Index()
         {
             var model = new HomeModel
             {
                 Customers = new List<Customer> {
-                    new Customer { Id = 1, FirstName = "Hasim", LastName = "Santello", DOB = new DateTime(2004, 9, 2)},
-                    new Customer { Id = 2, FirstName = "Inger", LastName = "Zupone", DOB = new DateTime(1938, 5, 21)},
-                    new Customer { Id = 3, FirstName = "Derrick", LastName = "Have", DOB = new DateTime(2014, 3, 29)},
-                    new Customer { Id = 4, FirstName = "Atalanta", LastName = "Jeakins", DOB = new DateTime(1922, 5, 13)},
-                    new Customer { Id = 5, FirstName = "Mahmoud", LastName = "Rudolph", DOB = new DateTime(1973, 5, 9)}
+                    new Customer { Id = 1, FirstName = "Hasim", LastName = "Santello", DOB = GetDateString(new DateTime(2004, 9, 2))},
+                    new Customer { Id = 2, FirstName = "Inger", LastName = "Zupone", DOB = GetDateString(new DateTime(1938, 5, 21))},
+                    new Customer { Id = 3, FirstName = "Derrick", LastName = "Have", DOB = GetDateString(new DateTime(2014, 3, 29))},
+                    new Customer { Id = 4, FirstName = "Atalanta", LastName = "Jeakins", DOB = GetDateString(new DateTime(1922, 5, 13))},
+                    new Customer { Id = 5, FirstName = "Mahmoud", LastName = "Rudolph", DOB = GetDateString(new DateTime(1973, 5, 9))}
                 }
             };
             return View(model);

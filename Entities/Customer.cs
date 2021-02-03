@@ -10,6 +10,6 @@ namespace json_to_view.Entities
         public double Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime DOB { get; set; }
+        public string DOB { get; set; }
     }
 }

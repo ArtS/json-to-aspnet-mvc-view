@@ -1,9 +1,11 @@
-﻿@model HomeModel
+﻿@using System.Text.Json;
+@using System.Text.Json.Serialization;
+@model HomeModel
 @{
     ViewData["Title"] = "Customers";
 }
 
-<table class="table">
+<table id="tblCustomers" class="table">
     <thead>
         <tr>
             <th scope="col">#</th>
@@ -13,22 +15,41 @@
         </tr>
     </thead>
     <tbody>
-        @{
-            foreach (var customer in Model.Customers)
-            {
-                <tr>
-                    <th scope="row"><input name="customerId" type="checkbox" value="@customer.Id" /></th>
-                    <td>@customer.FirstName</td>
-                    <td>@customer.LastName</td>
-                    <td>@customer.DOB.ToLocalTime().ToString()</td>
-                </tr>
-
-            }
-        }
     </tbody>
 </table>
 
-        <div class="text-center">
-            <h1 class="display-4">Welcome</h1>
-            <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-        </div>
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        //
+        // .NET Version Warning!
+        //
+        // If your framework is older than .NET Core 3.0, reference Newtonsoft.Json library,
+        // and call JsonConvert.SerializeObject() instead of JsonSerializer.Serialize()
+        //
+        var customers = JSON.parse('@Html.Raw(JsonSerializer.Serialize(Model.Customers))');
+        // 
+        // Cross-Site Scripting (XSS) vulnerability Warning!
+        //
+        // Be very careful with how you use the JSON you got from the call above.
+        // It's very easy to end up creating XSS vulnerability in your app.
+        // One of the ways is building HTML by hand, like '<div>' + customers[i].FirstName + '</div>'
+        //
+        // For example, if 'FirstName' contains tags like '<script>' (put in there by malicios user), your site 
+        // will execute that on clint's browsers.
+        // 
+        // See https://docs.microsoft.com/en-us/aspnet/core/security/cross-site-scripting?view=aspnetcore-5.0
+        // for more information on how to avoid XSS.
+        //
+
+        var tbody = $('#tblCustomers tbody');
+        for (i in customers) {
+            var row = $('<tr>');
+            var checkbox = $('<input type="checkbox">').val(customers[i].Id);
+            row.append($('<th scope="row">').append(checkbox));
+            row.append($('<td>').text(customers[i].FirstName));
+            row.append($('<td>').text(customers[i].LastName));
+            row.append($('<td>').text(customers[i].DOB));
+            tbody.append(row);
+        }
+    });
+</script>
