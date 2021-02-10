@@ -28,6 +28,7 @@
         //
         /*
          JsonSerializer.Serialize(Model.Customers) -> {&quot;Id&quot;:1,&quot;FirstName&quot;:&quot;Hasim&quot;,&quot;LastName&quot;:&quot;Santello&quot;,&quot;DOB&quot;:&quot;2/09/2004&quot;}
+         JSON.parse('[{"Id":1,"FirstName":"Hasim","LastName":"Santello","DOB":"2/09/2004"}
          */
         var customers = JSON.parse('@Html.Raw(JsonSerializer.Serialize(Model.Customers))');
         // 
